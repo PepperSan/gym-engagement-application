@@ -1,8 +1,5 @@
 package com.gym.engagement.app.storage;
 
-import com.gym.engagement.app.domain.Trainee;
-import com.gym.engagement.app.domain.Trainer;
-import com.gym.engagement.app.domain.Training;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -11,19 +8,9 @@ import java.util.Map;
 @Component
 public class Storage {
 
-    private final Map<Long, Trainee> trainees = new HashMap<>();
-    private final Map<Long, Trainer> trainers = new HashMap<>();
-    private final Map<Long, Training> trainings = new HashMap<>();
+    private final Map<String, Map<Long, Object>> storage = new HashMap<>();
 
-    public Map<Long, Trainee> getTrainees() {
-        return trainees;
-    }
-
-    public Map<Long, Trainer> getTrainers() {
-        return trainers;
-    }
-
-    public Map<Long, Training> getTrainings() {
-        return trainings;
+    public Map<Long, Object> getStorage(String namespace) {
+        return storage.computeIfAbsent(namespace, key -> new HashMap<>());
     }
 }
