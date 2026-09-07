@@ -2,16 +2,14 @@ package com.gym.engagement.app.service;
 
 import com.gym.engagement.app.dao.impl.TraineeDao;
 import com.gym.engagement.app.domain.Trainee;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class TraineeService {
 
     private final TraineeDao traineeDao;
-
-    public TraineeService(TraineeDao traineeDao) {
-        this.traineeDao = traineeDao;
-    }
 
     public void create(Trainee trainee) {
         traineeDao.save(trainee);
@@ -27,5 +25,5 @@ public class TraineeService {
 
     public void deleteById(Long id) {
         traineeDao.deleteById(id);
-    }
+}
 }
