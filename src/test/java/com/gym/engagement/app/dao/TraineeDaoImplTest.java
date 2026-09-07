@@ -2,7 +2,6 @@ package com.gym.engagement.app.dao;
 
 import com.gym.engagement.app.dao.impl.TraineeDao;
 import com.gym.engagement.app.domain.Trainee;
-
 import com.gym.engagement.app.storage.TraineeStorage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,11 +9,10 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class TraineeDaoImplTest {
-
 
     private TraineeStorage traineeStorage;
     private TraineeDao traineeDao;
@@ -22,7 +20,6 @@ class TraineeDaoImplTest {
 
     @BeforeEach
     void setUp() {
-
         traineeStorage = new TraineeStorage();
         traineeDao = new TraineeDaoImpl(traineeStorage);
         trainee = buildTrainee();
@@ -52,11 +49,9 @@ class TraineeDaoImplTest {
         traineeDao.save(trainee);
 
         Trainee updatedTrainee = buildUpdatedTrainee();
-
         traineeDao.update(updatedTrainee);
 
-        Trainee actual = traineeDao.findById(1L);
-
+        Trainee actual = traineeDao.findById(updatedTrainee.getUserId());
         assertEquals("Andrii Updated", actual.getFirstName());
         assertEquals("456 Oak Street", actual.getAddress());
     }

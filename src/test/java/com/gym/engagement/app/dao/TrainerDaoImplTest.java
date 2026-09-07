@@ -2,15 +2,14 @@ package com.gym.engagement.app.dao;
 
 import com.gym.engagement.app.dao.impl.TrainerDao;
 import com.gym.engagement.app.domain.Trainer;
-
 import com.gym.engagement.app.storage.TrainerStorage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class TrainerDaoImplTest {
-
 
     private TrainerStorage trainerStorage;
     private TrainerDao trainerDao;
@@ -18,7 +17,6 @@ class TrainerDaoImplTest {
 
     @BeforeEach
     void setUp() {
-
         trainerStorage = new TrainerStorage();
         trainerDao = new TrainerDaoImpl(trainerStorage);
         trainer = buildTrainer();
@@ -48,15 +46,11 @@ class TrainerDaoImplTest {
         trainerDao.save(trainer);
 
         Trainer updatedTrainer = buildUpdatedTrainer();
-
         trainerDao.update(updatedTrainer);
 
-        Trainer actual = trainerDao.findById(1L);
-
+        Trainer actual = trainerDao.findById(updatedTrainer.getUserId());
         assertEquals("Trainer Updated", actual.getFirstName());
-
     }
-
 
     private static Trainer buildTrainer() {
         return Trainer.builder()

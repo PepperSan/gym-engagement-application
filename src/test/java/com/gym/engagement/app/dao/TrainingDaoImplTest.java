@@ -2,17 +2,16 @@ package com.gym.engagement.app.dao;
 
 import com.gym.engagement.app.dao.impl.TrainingDao;
 import com.gym.engagement.app.domain.Training;
-
 import com.gym.engagement.app.storage.TrainingStorage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class TrainingDaoImplTest {
-
 
     private TrainingStorage trainingStorage;
     private TrainingDao trainingDao;
@@ -20,7 +19,6 @@ class TrainingDaoImplTest {
 
     @BeforeEach
     void setUp() {
-
         trainingStorage = new TrainingStorage();
         trainingDao = new TrainingDaoImpl(trainingStorage);
         training = buildTraining();
@@ -55,18 +53,6 @@ class TrainingDaoImplTest {
                 .trainingName("Java Training")
                 .trainingType(null)
                 .trainingDuration(60)
-                .trainingDate(LocalDate.of(2026, 9, 6))
-                .build();
-    }
-
-    private static Training buildUpdatedTraining() {
-        return Training.builder()
-                .id(1L)
-                .traineeId(1L)
-                .trainerId(1L)
-                .trainingName("Updated Java Training")
-                .trainingType(null)
-                .trainingDuration(120)
                 .trainingDate(LocalDate.of(2026, 9, 6))
                 .build();
     }
