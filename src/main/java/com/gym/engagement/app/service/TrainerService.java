@@ -20,6 +20,6 @@ public class TrainerService {
     }
 
     public void update(Trainer trainer) {
-        trainerDao.update(trainee);
+        trainerDao.update(trainer);
     }
 }
