@@ -47,13 +47,13 @@ class TraineeDaoImplTest {
     @Test
     void shouldUpdateTrainee() {
         traineeDao.save(trainee);
-
         Trainee updatedTrainee = buildUpdatedTrainee();
+
         traineeDao.update(updatedTrainee);
 
-        Trainee actual = traineeDao.findById(updatedTrainee.getUserId());
-        assertEquals("Andrii Updated", actual.getFirstName());
-        assertEquals("456 Oak Street", actual.getAddress());
+        Trainee persisted = traineeDao.findById(updatedTrainee.getUserId());
+        assertEquals("Andrii Updated", persisted.getFirstName());
+        assertEquals("456 Oak Street", persisted.getAddress());
     }
 
     @Test

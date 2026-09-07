@@ -44,12 +44,12 @@ class TrainerDaoImplTest {
     @Test
     void shouldUpdateTrainer() {
         trainerDao.save(trainer);
-
         Trainer updatedTrainer = buildUpdatedTrainer();
+
         trainerDao.update(updatedTrainer);
 
-        Trainer actual = trainerDao.findById(updatedTrainer.getUserId());
-        assertEquals("Trainer Updated", actual.getFirstName());
+        Trainer persisted = trainerDao.findById(updatedTrainer.getUserId());
+        assertEquals("Trainer Updated", persisted.getFirstName());
     }
 
     private static Trainer buildTrainer() {
