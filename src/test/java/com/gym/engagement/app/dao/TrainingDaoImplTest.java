@@ -1,7 +1,8 @@
 package com.gym.engagement.app.dao;
 
+import com.gym.engagement.app.dao.impl.TrainingDao;
 import com.gym.engagement.app.domain.Training;
-import com.gym.engagement.app.storage.Storage;
+
 import com.gym.engagement.app.storage.TrainingStorage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,15 +13,15 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class TrainingDaoImplTest {
 
-    private Storage storage;
+
     private TrainingStorage trainingStorage;
     private TrainingDao trainingDao;
     private Training training;
 
     @BeforeEach
     void setUp() {
-        storage = new Storage();
-        trainingStorage = new TrainingStorage(storage);
+
+        trainingStorage = new TrainingStorage();
         trainingDao = new TrainingDaoImpl(trainingStorage);
         training = buildTraining();
     }
@@ -31,6 +32,7 @@ class TrainingDaoImplTest {
 
         Training actual = trainingDao.findById(training.getId());
 
+        assertNotNull(actual);
         assertEquals(training, actual);
     }
 
@@ -44,28 +46,6 @@ class TrainingDaoImplTest {
         assertEquals("Java Training", actual.getTrainingName());
     }
 
-    @Test
-    void shouldUpdateTraining() {
-        trainingDao.save(training);
-
-        Training updatedTraining = buildUpdatedTraining();
-
-        trainingDao.update(updatedTraining);
-
-        Training actual = trainingDao.findById(1L);
-
-        assertEquals("Updated Java Training", actual.getTrainingName());
-        assertEquals(120, actual.getTrainingDuration());
-    }
-
-    @Test
-    void shouldDeleteTrainingById() {
-        trainingDao.save(training);
-
-        trainingDao.deleteById(training.getId());
-
-        assertNull(trainingDao.findById(training.getId()));
-    }
 
     private static Training buildTraining() {
         return Training.builder()

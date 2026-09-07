@@ -1,19 +1,17 @@
 package com.gym.engagement.app.storage;
 
 import com.gym.engagement.app.domain.Training;
+import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.util.Map;
 
+@Component
 public class TrainingStorage {
 
-    private final Storage storage;
+    private final Map<Long, Training> trainings = new HashMap<>();
 
-    public TrainingStorage(Storage storage) {
-        this.storage = storage;
-    }
-
-    @SuppressWarnings("unchecked")
     public Map<Long, Training> getTrainings() {
-        return (Map<Long, Training>) (Map<?, ?>) storage.getStorage("trainings");
+        return trainings;
     }
 }

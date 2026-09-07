@@ -1,5 +1,6 @@
 package com.gym.engagement.app.dao;
 
+import com.gym.engagement.app.dao.impl.TrainingDao;
 import com.gym.engagement.app.domain.Training;
 import com.gym.engagement.app.storage.TrainingStorage;
 import lombok.RequiredArgsConstructor;
@@ -19,13 +20,4 @@ public class TrainingDaoImpl implements TrainingDao {
         return trainingStorage.getTrainings().get(id);
     }
 
-    @Override
-    public void update(Training training) {
-        trainingStorage.getTrainings().put(training.getId(), training);
-    }
-
-    @Override
-    public void deleteById(Long id) {
-        trainingStorage.getTrainings().remove(id);
-    }
 }

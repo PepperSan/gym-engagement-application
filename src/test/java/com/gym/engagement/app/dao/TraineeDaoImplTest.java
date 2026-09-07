@@ -1,7 +1,8 @@
 package com.gym.engagement.app.dao;
 
+import com.gym.engagement.app.dao.impl.TraineeDao;
 import com.gym.engagement.app.domain.Trainee;
-import com.gym.engagement.app.storage.Storage;
+
 import com.gym.engagement.app.storage.TraineeStorage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,15 +15,15 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class TraineeDaoImplTest {
 
-    private Storage storage;
+
     private TraineeStorage traineeStorage;
     private TraineeDao traineeDao;
     private Trainee trainee;
 
     @BeforeEach
     void setUp() {
-        storage = new Storage();
-        traineeStorage = new TraineeStorage(storage);
+
+        traineeStorage = new TraineeStorage();
         traineeDao = new TraineeDaoImpl(traineeStorage);
         trainee = buildTrainee();
     }
@@ -31,9 +32,9 @@ class TraineeDaoImplTest {
     void shouldSaveTrainee() {
         traineeDao.save(trainee);
 
-        Trainee result = traineeDao.findById(trainee.getUserId());
+        Trainee actual = traineeDao.findById(trainee.getUserId());
 
-        assertEquals(trainee, result);
+        assertEquals(trainee, actual);
     }
 
     @Test

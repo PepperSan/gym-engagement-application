@@ -1,5 +1,6 @@
 package com.gym.engagement.app.dao;
 
+import com.gym.engagement.app.dao.impl.TrainerDao;
 import com.gym.engagement.app.domain.Trainer;
 import com.gym.engagement.app.storage.TrainerStorage;
 import lombok.RequiredArgsConstructor;
@@ -24,8 +25,4 @@ public class TrainerDaoImpl implements TrainerDao {
         trainerStorage.getTrainers().put(trainer.getUserId(), trainer);
     }
 
-    @Override
-    public void deleteById(Long id) {
-        trainerStorage.getTrainers().remove(id);
-    }
 }

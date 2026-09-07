@@ -1,4 +1,4 @@
-package com.gym.engagement.app.dao;
+package com.gym.engagement.app.dao.impl;
 
 import com.gym.engagement.app.domain.Trainer;
 
@@ -10,5 +10,4 @@ public interface TrainerDao {
 
     void update(Trainer trainer);
 
-    void deleteById(Long id);
 }
