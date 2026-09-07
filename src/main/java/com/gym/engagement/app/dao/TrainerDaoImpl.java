@@ -4,7 +4,9 @@ import com.gym.engagement.app.dao.impl.TrainerDao;
 import com.gym.engagement.app.domain.Trainer;
 import com.gym.engagement.app.storage.TrainerStorage;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 
+@Repository
 @RequiredArgsConstructor
 public class TrainerDaoImpl implements TrainerDao {
 
