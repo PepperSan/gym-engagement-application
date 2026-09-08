@@ -1,6 +1,6 @@
 package com.gym.engagement.app.dao;
 
-import com.gym.engagement.app.dao.impl.TraineeDao;
+import com.gym.engagement.app.dao.impl.TraineeDaoImpl;
 import com.gym.engagement.app.domain.Trainee;
 import com.gym.engagement.app.storage.TraineeStorage;
 import org.junit.jupiter.api.BeforeEach;

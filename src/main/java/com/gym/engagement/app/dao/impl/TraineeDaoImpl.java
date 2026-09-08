@@ -1,6 +1,6 @@
-package com.gym.engagement.app.dao;
+package com.gym.engagement.app.dao.impl;
 
-import com.gym.engagement.app.dao.impl.TraineeDao;
+import com.gym.engagement.app.dao.TraineeDao;
 import com.gym.engagement.app.domain.Trainee;
 import com.gym.engagement.app.storage.TraineeStorage;
 import lombok.RequiredArgsConstructor;

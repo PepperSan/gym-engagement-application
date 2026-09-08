@@ -1,6 +1,6 @@
 package com.gym.engagement.app.service;
 
-import com.gym.engagement.app.dao.impl.TrainingDao;
+import com.gym.engagement.app.dao.TrainingDao;
 import com.gym.engagement.app.domain.Training;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
