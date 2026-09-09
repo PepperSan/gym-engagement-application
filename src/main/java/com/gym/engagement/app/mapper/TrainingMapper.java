@@ -2,13 +2,15 @@ package com.gym.engagement.app.mapper;
 
 import com.gym.engagement.app.domain.Training;
 import com.gym.engagement.app.dto.TrainingDTO;
+import org.springframework.stereotype.Component;
 
-public final class TrainingMapper {
+@Component
+public class TrainingMapper {
 
     private TrainingMapper() {
     }
 
-    public static TrainingDTO toDto(Training training) {
+    public TrainingDTO toDto(Training training) {
         if (training == null) {
             return null;
         }
@@ -23,7 +25,7 @@ public final class TrainingMapper {
                 .build();
     }
 
-    public static Training toEntity(TrainingDTO dto) {
+    public Training toEntity(TrainingDTO dto) {
         if (dto == null) {
             return null;
         }

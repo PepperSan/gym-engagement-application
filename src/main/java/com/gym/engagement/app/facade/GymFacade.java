@@ -17,42 +17,50 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class UserFacade {
+public class GymFacade {
 
     private final TrainerService trainerService;
     private final TraineeService traineeService;
     private final TrainingService trainingService;
 
+    private final TrainerMapper trainerMapper;
+    private final TraineeMapper traineeMapper;
+    private final TrainingMapper trainingMapper;
+
     public TrainerDTO createTrainer(TrainerDTO trainerDto) {
-        Trainer trainer = TrainerMapper.toEntity(trainerDto);
+        Trainer trainer = trainerMapper.toEntity(trainerDto);
         trainerService.create(trainer);
-        return TrainerMapper.toDto(trainer);
+
+        return trainerMapper.toDto(trainer);
     }
 
     public TrainerDTO selectTrainerById(Long id) {
-        return TrainerMapper.toDto(trainerService.selectById(id));
+        return trainerMapper.toDto(trainerService.selectById(id));
     }
 
     public TrainerDTO updateTrainer(TrainerDTO trainerDto) {
-        Trainer trainer = TrainerMapper.toEntity(trainerDto);
+        Trainer trainer = trainerMapper.toEntity(trainerDto);
         trainerService.update(trainer);
-        return TrainerMapper.toDto(trainer);
+
+        return trainerMapper.toDto(trainer);
     }
 
     public TraineeDTO createTrainee(TraineeDTO traineeDto) {
-        Trainee trainee = TraineeMapper.toEntity(traineeDto);
+        Trainee trainee = traineeMapper.toEntity(traineeDto);
         traineeService.create(trainee);
-        return TraineeMapper.toDto(trainee);
+
+        return traineeMapper.toDto(trainee);
     }
 
     public TraineeDTO selectTraineeById(Long id) {
-        return TraineeMapper.toDto(traineeService.selectById(id));
+        return traineeMapper.toDto(traineeService.selectById(id));
     }
 
     public TraineeDTO updateTrainee(TraineeDTO traineeDto) {
-        Trainee trainee = TraineeMapper.toEntity(traineeDto);
+        Trainee trainee = traineeMapper.toEntity(traineeDto);
         traineeService.update(trainee);
-        return TraineeMapper.toDto(trainee);
+
+        return traineeMapper.toDto(trainee);
     }
 
     public void deleteTraineeById(Long id) {
@@ -60,12 +68,13 @@ public class UserFacade {
     }
 
     public TrainingDTO createTraining(TrainingDTO trainingDto) {
-        Training training = TrainingMapper.toEntity(trainingDto);
+        Training training = trainingMapper.toEntity(trainingDto);
         trainingService.create(training);
-        return TrainingMapper.toDto(training);
+
+        return trainingMapper.toDto(training);
     }
 
     public TrainingDTO selectTrainingById(Long id) {
-        return TrainingMapper.toDto(trainingService.selectById(id));
+        return trainingMapper.toDto(trainingService.selectById(id));
     }
 }
