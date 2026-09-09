@@ -1,4 +1,4 @@
-package com.gym.engagement.app.dao.impl;
+package com.gym.engagement.app.dao;
 
 import com.gym.engagement.app.domain.Trainee;
 
