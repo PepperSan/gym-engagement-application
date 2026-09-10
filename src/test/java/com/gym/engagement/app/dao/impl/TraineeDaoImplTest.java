@@ -1,12 +1,11 @@
-package com.gym.engagement.app.dao;
+package com.gym.engagement.app.dao.impl;
 
-import com.gym.engagement.app.dao.impl.TraineeDaoImpl;
+import com.gym.engagement.app.dao.TraineeDao;
 import com.gym.engagement.app.domain.Trainee;
+import com.gym.engagement.app.storage.CommonStorage;
 import com.gym.engagement.app.storage.TraineeStorage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -14,14 +13,15 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 class TraineeDaoImplTest {
 
-    private TraineeStorage traineeStorage;
     private TraineeDao traineeDao;
     private Trainee trainee;
 
     @BeforeEach
     void setUp() {
-        traineeStorage = new TraineeStorage();
-        traineeDao = new TraineeDaoImpl(traineeStorage);
+        TraineeStorage traineeStorage = new TraineeStorage();
+        CommonStorage commonStorage = new CommonStorage(traineeStorage, null, null);
+        traineeDao = new TraineeDaoImpl();
+        ((TraineeDaoImpl) traineeDao).setTraineeStorage(commonStorage);
         trainee = buildTrainee();
     }
 
@@ -74,7 +74,6 @@ class TraineeDaoImplTest {
                 .password("password")
                 .isActive(true)
                 .address("123 Main Street")
-                .dateOfBirth(LocalDate.of(1990, 1, 1))
                 .build();
     }
 
@@ -87,7 +86,6 @@ class TraineeDaoImplTest {
                 .password("password")
                 .isActive(true)
                 .address("456 Oak Street")
-                .dateOfBirth(LocalDate.of(1990, 1, 1))
                 .build();
     }
 }

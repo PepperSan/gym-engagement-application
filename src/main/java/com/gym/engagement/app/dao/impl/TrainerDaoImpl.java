@@ -2,15 +2,20 @@ package com.gym.engagement.app.dao.impl;
 
 import com.gym.engagement.app.dao.TrainerDao;
 import com.gym.engagement.app.domain.Trainer;
+import com.gym.engagement.app.storage.CommonStorage;
 import com.gym.engagement.app.storage.TrainerStorage;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository
-@RequiredArgsConstructor
 public class TrainerDaoImpl implements TrainerDao {
 
-    private final TrainerStorage trainerStorage;
+    private TrainerStorage trainerStorage;
+
+    @Autowired
+    public void setTrainerStorage(CommonStorage commonStorage) {
+        this.trainerStorage = commonStorage.getTrainerStorage();
+    }
 
     @Override
     public void save(Trainer trainer) {
@@ -26,5 +31,4 @@ public class TrainerDaoImpl implements TrainerDao {
     public void update(Trainer trainer) {
         trainerStorage.getTrainers().put(trainer.getUserId(), trainer);
     }
-
 }
