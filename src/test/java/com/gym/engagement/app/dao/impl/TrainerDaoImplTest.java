@@ -1,7 +1,8 @@
-package com.gym.engagement.app.dao;
+package com.gym.engagement.app.dao.impl;
 
-import com.gym.engagement.app.dao.impl.TrainerDaoImpl;
+import com.gym.engagement.app.dao.TrainerDao;
 import com.gym.engagement.app.domain.Trainer;
+import com.gym.engagement.app.storage.CommonStorage;
 import com.gym.engagement.app.storage.TrainerStorage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,14 +12,15 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class TrainerDaoImplTest {
 
-    private TrainerStorage trainerStorage;
     private TrainerDao trainerDao;
     private Trainer trainer;
 
     @BeforeEach
     void setUp() {
-        trainerStorage = new TrainerStorage();
-        trainerDao = new TrainerDaoImpl(trainerStorage);
+        TrainerStorage trainerStorage = new TrainerStorage();
+        CommonStorage commonStorage = new CommonStorage(null, trainerStorage, null);
+        trainerDao = new TrainerDaoImpl();
+        ((TrainerDaoImpl) trainerDao).setTrainerStorage(commonStorage);
         trainer = buildTrainer();
     }
 
