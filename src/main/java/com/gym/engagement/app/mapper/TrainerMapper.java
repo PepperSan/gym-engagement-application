@@ -7,9 +7,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class TrainerMapper {
 
-    private TrainerMapper() {
-    }
-
     public TrainerDTO toDto(Trainer trainer) {
         if (trainer == null) {
             return null;
