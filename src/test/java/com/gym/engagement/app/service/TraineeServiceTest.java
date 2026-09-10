@@ -15,44 +15,48 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class TraineeServiceTest {
 
+    private static final Long USER_ID = 1L;
+    private static final String FIRST_NAME = "Andrii";
+    private static final String UPDATED_FIRST_NAME = "Andrii Updated";
+
     @Mock
     private TraineeDao traineeDao;
 
     @InjectMocks
-    private TraineeService traineeService;
+    private TraineeService service;
 
     @Test
     void create_shouldSaveTraineeViaDao() {
-        Trainee trainee = Trainee.builder().userId(1L).firstName("Andrii").build();
+        Trainee trainee = Trainee.builder().userId(USER_ID).firstName(FIRST_NAME).build();
 
-        traineeService.create(trainee);
+        service.create(trainee);
 
         verify(traineeDao).save(trainee);
     }
 
     @Test
     void selectById_shouldReturnTraineeFromDao() {
-        Trainee trainee = Trainee.builder().userId(1L).firstName("Andrii").build();
-        when(traineeDao.findById(1L)).thenReturn(trainee);
+        Trainee trainee = Trainee.builder().userId(USER_ID).firstName(FIRST_NAME).build();
+        when(traineeDao.findById(USER_ID)).thenReturn(trainee);
 
-        Trainee actual = traineeService.selectById(1L);
+        Trainee actual = service.selectById(USER_ID);
 
         assertThat(actual).isEqualTo(trainee);
     }
 
     @Test
     void update_shouldUpdateTraineeViaDao() {
-        Trainee trainee = Trainee.builder().userId(1L).firstName("Andrii Updated").build();
+        Trainee trainee = Trainee.builder().userId(USER_ID).firstName(UPDATED_FIRST_NAME).build();
 
-        traineeService.update(trainee);
+        service.update(trainee);
 
         verify(traineeDao).update(trainee);
     }
 
     @Test
     void deleteById_shouldDeleteTraineeViaDao() {
-        traineeService.deleteById(1L);
+        service.deleteById(USER_ID);
 
-        verify(traineeDao).deleteById(1L);
+        verify(traineeDao).deleteById(USER_ID);
     }
 }

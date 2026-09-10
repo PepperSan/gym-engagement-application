@@ -21,6 +21,10 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class GymFacadeTest {
 
+    private static final Long USER_ID = 1L;
+    private static final String FIRST_NAME = "Andrii";
+    private static final String LAST_NAME = "Test";
+
     @Mock
     private TrainerService trainerService;
 
@@ -40,17 +44,17 @@ class GymFacadeTest {
     private TrainingMapper trainingMapper;
 
     @InjectMocks
-    private GymFacade gymFacade;
+    private GymFacade facade;
 
     @Test
     void createTrainee_shouldMapDelegateAndReturnDto() {
-        TraineeDTO traineeDto = TraineeDTO.builder().firstName("Andrii").lastName("Test").build();
-        Trainee trainee = Trainee.builder().firstName("Andrii").lastName("Test").build();
+        TraineeDTO traineeDto = TraineeDTO.builder().firstName(FIRST_NAME).lastName(LAST_NAME).build();
+        Trainee trainee = Trainee.builder().firstName(FIRST_NAME).lastName(LAST_NAME).build();
 
         when(traineeMapper.toEntity(traineeDto)).thenReturn(trainee);
         when(traineeMapper.toDto(trainee)).thenReturn(traineeDto);
 
-        TraineeDTO actual = gymFacade.createTrainee(traineeDto);
+        TraineeDTO actual = facade.createTrainee(traineeDto);
 
         verify(traineeService).create(trainee);
         assertThat(actual).isEqualTo(traineeDto);
@@ -58,21 +62,21 @@ class GymFacadeTest {
 
     @Test
     void selectTraineeById_shouldMapAndReturnDto() {
-        Trainee trainee = Trainee.builder().userId(1L).firstName("Andrii").build();
-        TraineeDTO traineeDto = TraineeDTO.builder().userId(1L).firstName("Andrii").build();
+        Trainee trainee = Trainee.builder().userId(USER_ID).firstName(FIRST_NAME).build();
+        TraineeDTO traineeDto = TraineeDTO.builder().userId(USER_ID).firstName(FIRST_NAME).build();
 
-        when(traineeService.selectById(1L)).thenReturn(trainee);
+        when(traineeService.selectById(USER_ID)).thenReturn(trainee);
         when(traineeMapper.toDto(trainee)).thenReturn(traineeDto);
 
-        TraineeDTO actual = gymFacade.selectTraineeById(1L);
+        TraineeDTO actual = facade.selectTraineeById(USER_ID);
 
         assertThat(actual).isEqualTo(traineeDto);
     }
 
     @Test
     void deleteTraineeById_shouldDelegateToService() {
-        gymFacade.deleteTraineeById(1L);
+        facade.deleteTraineeById(USER_ID);
 
-        verify(traineeService).deleteById(1L);
+        verify(traineeService).deleteById(USER_ID);
     }
 }

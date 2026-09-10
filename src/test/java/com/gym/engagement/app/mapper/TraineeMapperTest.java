@@ -10,27 +10,35 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class TraineeMapperTest {
 
-    private final TraineeMapper traineeMapper = new TraineeMapper();
+    private static final Long USER_ID = 1L;
+    private static final String USERNAME = "Andrii.Test";
+    private static final String FIRST_NAME = "Andrii";
+    private static final String LAST_NAME = "Test";
+    private static final String PASSWORD = "password123";
+    private static final String ADDRESS = "123 Main St";
+    private static final LocalDate DATE_OF_BIRTH = LocalDate.of(2000, 1, 1);
+
+    private final TraineeMapper mapper = new TraineeMapper();
 
     @Test
     void toDto_shouldMapAllFields_whenTraineeIsNotNull() {
         Trainee trainee = buildTrainee();
 
-        TraineeDTO actual = traineeMapper.toDto(trainee);
+        TraineeDTO actual = mapper.toDto(trainee);
 
-        assertThat(actual.getUserId()).isEqualTo(1L);
-        assertThat(actual.getUsername()).isEqualTo("Andrii.Test");
-        assertThat(actual.getFirstName()).isEqualTo("Andrii");
-        assertThat(actual.getLastName()).isEqualTo("Test");
-        assertThat(actual.getPassword()).isEqualTo("password123");
+        assertThat(actual.getUserId()).isEqualTo(USER_ID);
+        assertThat(actual.getUsername()).isEqualTo(USERNAME);
+        assertThat(actual.getFirstName()).isEqualTo(FIRST_NAME);
+        assertThat(actual.getLastName()).isEqualTo(LAST_NAME);
+        assertThat(actual.getPassword()).isEqualTo(PASSWORD);
         assertThat(actual.isActive()).isTrue();
-        assertThat(actual.getAddress()).isEqualTo("123 Main St");
-        assertThat(actual.getDateOfBirth()).isEqualTo(LocalDate.of(2000, 1, 1));
+        assertThat(actual.getAddress()).isEqualTo(ADDRESS);
+        assertThat(actual.getDateOfBirth()).isEqualTo(DATE_OF_BIRTH);
     }
 
     @Test
     void toDto_shouldReturnNull_whenTraineeIsNull() {
-        TraineeDTO actual = traineeMapper.toDto(null);
+        TraineeDTO actual = mapper.toDto(null);
 
         assertThat(actual).isNull();
     }
@@ -39,48 +47,48 @@ class TraineeMapperTest {
     void toEntity_shouldMapAllFields_whenDtoIsNotNull() {
         TraineeDTO dto = buildTraineeDto();
 
-        Trainee actual = traineeMapper.toEntity(dto);
+        Trainee actual = mapper.toEntity(dto);
 
-        assertThat(actual.getUserId()).isEqualTo(1L);
-        assertThat(actual.getUsername()).isEqualTo("Andrii.Test");
-        assertThat(actual.getFirstName()).isEqualTo("Andrii");
-        assertThat(actual.getLastName()).isEqualTo("Test");
-        assertThat(actual.getPassword()).isEqualTo("password123");
+        assertThat(actual.getUserId()).isEqualTo(USER_ID);
+        assertThat(actual.getUsername()).isEqualTo(USERNAME);
+        assertThat(actual.getFirstName()).isEqualTo(FIRST_NAME);
+        assertThat(actual.getLastName()).isEqualTo(LAST_NAME);
+        assertThat(actual.getPassword()).isEqualTo(PASSWORD);
         assertThat(actual.isActive()).isTrue();
-        assertThat(actual.getAddress()).isEqualTo("123 Main St");
-        assertThat(actual.getDateOfBirth()).isEqualTo(LocalDate.of(2000, 1, 1));
+        assertThat(actual.getAddress()).isEqualTo(ADDRESS);
+        assertThat(actual.getDateOfBirth()).isEqualTo(DATE_OF_BIRTH);
     }
 
     @Test
     void toEntity_shouldReturnNull_whenDtoIsNull() {
-        Trainee actual = traineeMapper.toEntity(null);
+        Trainee actual = mapper.toEntity(null);
 
         assertThat(actual).isNull();
     }
 
     private static Trainee buildTrainee() {
         return Trainee.builder()
-                .userId(1L)
-                .username("Andrii.Test")
-                .firstName("Andrii")
-                .lastName("Test")
-                .password("password123")
+                .userId(USER_ID)
+                .username(USERNAME)
+                .firstName(FIRST_NAME)
+                .lastName(LAST_NAME)
+                .password(PASSWORD)
                 .isActive(true)
-                .address("123 Main St")
-                .dateOfBirth(LocalDate.of(2000, 1, 1))
+                .address(ADDRESS)
+                .dateOfBirth(DATE_OF_BIRTH)
                 .build();
     }
 
     private static TraineeDTO buildTraineeDto() {
         return TraineeDTO.builder()
-                .userId(1L)
-                .username("Andrii.Test")
-                .firstName("Andrii")
-                .lastName("Test")
-                .password("password123")
+                .userId(USER_ID)
+                .username(USERNAME)
+                .firstName(FIRST_NAME)
+                .lastName(LAST_NAME)
+                .password(PASSWORD)
                 .isActive(true)
-                .address("123 Main St")
-                .dateOfBirth(LocalDate.of(2000, 1, 1))
+                .address(ADDRESS)
+                .dateOfBirth(DATE_OF_BIRTH)
                 .build();
     }
 }
