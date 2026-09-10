@@ -14,16 +14,7 @@ class TraineeMapperTest {
 
     @Test
     void toDto_shouldMapAllFields_whenTraineeIsNotNull() {
-        Trainee trainee = Trainee.builder()
-                .userId(1L)
-                .username("Andrii.Test")
-                .firstName("Andrii")
-                .lastName("Test")
-                .password("password123")
-                .isActive(true)
-                .address("123 Main St")
-                .dateOfBirth(LocalDate.of(2000, 1, 1))
-                .build();
+        Trainee trainee = buildTrainee();
 
         TraineeDTO actual = traineeMapper.toDto(trainee);
 
@@ -46,16 +37,7 @@ class TraineeMapperTest {
 
     @Test
     void toEntity_shouldMapAllFields_whenDtoIsNotNull() {
-        TraineeDTO dto = TraineeDTO.builder()
-                .userId(1L)
-                .username("Andrii.Test")
-                .firstName("Andrii")
-                .lastName("Test")
-                .password("password123")
-                .isActive(true)
-                .address("123 Main St")
-                .dateOfBirth(LocalDate.of(2000, 1, 1))
-                .build();
+        TraineeDTO dto = buildTraineeDto();
 
         Trainee actual = traineeMapper.toEntity(dto);
 
@@ -74,5 +56,31 @@ class TraineeMapperTest {
         Trainee actual = traineeMapper.toEntity(null);
 
         assertThat(actual).isNull();
+    }
+
+    private static Trainee buildTrainee() {
+        return Trainee.builder()
+                .userId(1L)
+                .username("Andrii.Test")
+                .firstName("Andrii")
+                .lastName("Test")
+                .password("password123")
+                .isActive(true)
+                .address("123 Main St")
+                .dateOfBirth(LocalDate.of(2000, 1, 1))
+                .build();
+    }
+
+    private static TraineeDTO buildTraineeDto() {
+        return TraineeDTO.builder()
+                .userId(1L)
+                .username("Andrii.Test")
+                .firstName("Andrii")
+                .lastName("Test")
+                .password("password123")
+                .isActive(true)
+                .address("123 Main St")
+                .dateOfBirth(LocalDate.of(2000, 1, 1))
+                .build();
     }
 }
