@@ -1,7 +1,7 @@
-package com.gym.engagement.app.service;
+package com.gym.engagement.app.service.impl;
 
-import com.gym.engagement.app.dao.TrainerDao;
-import com.gym.engagement.app.domain.Trainer;
+import com.gym.engagement.app.dao.TraineeDao;
+import com.gym.engagement.app.domain.Trainee;
 import com.gym.engagement.app.service.common.UserCredentialsManager;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,7 +18,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class TrainerServiceTest {
+class TraineeServiceImplTest {
 
     private static final Long USER_ID = 1L;
     private static final String FIRST_NAME = "Andrii";
@@ -28,7 +28,7 @@ class TrainerServiceTest {
     private static final String ENCODED_PASSWORD = "encodedPass123";
 
     @Mock
-    private TrainerDao trainerDao;
+    private TraineeDao traineeDao;
 
     @Mock
     private UserCredentialsManager credentialsManager;
@@ -37,21 +37,21 @@ class TrainerServiceTest {
     private PasswordEncoder passwordEncoder;
 
     @InjectMocks
-    private TrainerService service;
+    private TraineeServiceImpl service;
 
     @Test
-    void create_shouldGenerateCredentialsAndSaveTrainer() {
-        Trainer trainer = Trainer.builder().userId(USER_ID).firstName(FIRST_NAME).lastName(LAST_NAME).build();
+    void create_shouldGenerateCredentialsAndSaveTrainee() {
+        Trainee trainee = Trainee.builder().userId(USER_ID).firstName(FIRST_NAME).lastName(LAST_NAME).build();
 
         when(credentialsManager.generateUsername(eq(FIRST_NAME), eq(LAST_NAME), any())).thenReturn(GENERATED_USERNAME);
         when(credentialsManager.generateRandomPassword()).thenReturn(RAW_PASSWORD);
         when(passwordEncoder.encode(RAW_PASSWORD)).thenReturn(ENCODED_PASSWORD);
 
-        Trainer actual = service.create(trainer);
+        Trainee actual = service.create(trainee);
 
-        ArgumentCaptor<Trainer> captor = ArgumentCaptor.forClass(Trainer.class);
-        verify(trainerDao).save(captor.capture());
-        Trainer saved = captor.getValue();
+        ArgumentCaptor<Trainee> captor = ArgumentCaptor.forClass(Trainee.class);
+        verify(traineeDao).save(captor.capture());
+        Trainee saved = captor.getValue();
         assertThat(saved.getUsername()).isEqualTo(GENERATED_USERNAME);
         assertThat(saved.getPassword()).isEqualTo(ENCODED_PASSWORD);
 
@@ -60,21 +60,28 @@ class TrainerServiceTest {
     }
 
     @Test
-    void selectById_shouldReturnTrainerFromDao() {
-        Trainer trainer = Trainer.builder().userId(USER_ID).firstName(FIRST_NAME).build();
-        when(trainerDao.findById(USER_ID)).thenReturn(trainer);
+    void selectById_shouldReturnTraineeFromDao() {
+        Trainee trainee = Trainee.builder().userId(USER_ID).firstName(FIRST_NAME).build();
+        when(traineeDao.findById(USER_ID)).thenReturn(trainee);
 
-        Trainer actual = service.selectById(USER_ID);
+        Trainee actual = service.selectById(USER_ID);
 
-        assertThat(actual).isEqualTo(trainer);
+        assertThat(actual).isEqualTo(trainee);
     }
 
     @Test
-    void update_shouldUpdateTrainerViaDao() {
-        Trainer trainer = Trainer.builder().userId(USER_ID).firstName(FIRST_NAME).build();
+    void update_shouldUpdateTraineeViaDao() {
+        Trainee trainee = Trainee.builder().userId(USER_ID).firstName(FIRST_NAME).build();
 
-        service.update(trainer);
+        service.update(trainee);
 
-        verify(trainerDao).update(trainer);
+        verify(traineeDao).update(trainee);
+    }
+
+    @Test
+    void deleteById_shouldDeleteTraineeViaDao() {
+        service.deleteById(USER_ID);
+
+        verify(traineeDao).deleteById(USER_ID);
     }
 }

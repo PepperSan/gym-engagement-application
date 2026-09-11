@@ -1,4 +1,4 @@
-package com.gym.engagement.app.service;
+package com.gym.engagement.app.service.impl;
 
 import com.gym.engagement.app.dao.TrainingDao;
 import com.gym.engagement.app.domain.Training;
@@ -13,7 +13,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class TrainingServiceTest {
+class TrainingServiceImplTest {
 
     private static final Long TRAINING_ID = 1L;
     private static final String TRAINING_NAME = "Cardio";
@@ -22,7 +22,7 @@ class TrainingServiceTest {
     private TrainingDao trainingDao;
 
     @InjectMocks
-    private TrainingService service;
+    private TrainingServiceImpl service;
 
     @Test
     void create_shouldSaveTrainingViaDao() {
