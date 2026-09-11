@@ -7,9 +7,7 @@ import com.gym.engagement.app.storage.TraineeStorage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 class TraineeDaoImplTest {
 
@@ -63,6 +61,22 @@ class TraineeDaoImplTest {
         traineeDao.deleteById(trainee.getUserId());
 
         assertNull(traineeDao.findById(trainee.getUserId()));
+    }
+
+    @Test
+    void existsByUsername_shouldReturnTrue_whenUsernameExists() {
+        traineeDao.save(trainee);
+
+        boolean actual = traineeDao.existsByUsername(trainee.getUsername());
+
+        assertTrue(actual);
+    }
+
+    @Test
+    void existsByUsername_shouldReturnFalse_whenUsernameDoesNotExist() {
+        boolean actual = traineeDao.existsByUsername("nonexistent.username");
+
+        assertFalse(actual);
     }
 
     private static Trainee buildTrainee() {

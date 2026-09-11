@@ -1,29 +1,14 @@
 package com.gym.engagement.app.service;
 
-import com.gym.engagement.app.dao.TraineeDao;
 import com.gym.engagement.app.domain.Trainee;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
-@Service
-@RequiredArgsConstructor
-public class TraineeService {
+public interface TraineeService {
 
-    private final TraineeDao traineeDao;
+    Trainee create(Trainee trainee);
 
-    public void create(Trainee trainee) {
-        traineeDao.save(trainee);
-    }
+    Trainee selectById(Long id);
 
-    public Trainee selectById(Long id) {
-        return traineeDao.findById(id);
-    }
+    void update(Trainee trainee);
 
-    public void update(Trainee trainee) {
-        traineeDao.update(trainee);
-    }
-
-    public void deleteById(Long id) {
-        traineeDao.deleteById(id);
-}
+    void deleteById(Long id);
 }

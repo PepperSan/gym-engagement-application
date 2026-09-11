@@ -3,7 +3,6 @@ package com.gym.engagement.app.facade;
 import com.gym.engagement.app.domain.Trainee;
 import com.gym.engagement.app.domain.Trainer;
 import com.gym.engagement.app.domain.Training;
-import com.gym.engagement.app.domain.TrainingType;
 import com.gym.engagement.app.dto.TraineeDTO;
 import com.gym.engagement.app.dto.TrainerDTO;
 import com.gym.engagement.app.dto.TrainingDTO;
@@ -29,6 +28,7 @@ class GymFacadeTest {
     private static final Long USER_ID = 1L;
     private static final String FIRST_NAME = "Andrii";
     private static final String LAST_NAME = "Test";
+    private static final String GENERATED_USERNAME = "Andrii.Test";
     private static final Long TRAINING_ID = 1L;
     private static final String TRAINING_NAME = "Cardio Session";
 
@@ -57,14 +57,16 @@ class GymFacadeTest {
     void createTrainee_shouldMapDelegateAndReturnDto() {
         TraineeDTO traineeDto = TraineeDTO.builder().firstName(FIRST_NAME).lastName(LAST_NAME).build();
         Trainee trainee = Trainee.builder().firstName(FIRST_NAME).lastName(LAST_NAME).build();
+        Trainee createdTrainee = Trainee.builder().firstName(FIRST_NAME).lastName(LAST_NAME).username(GENERATED_USERNAME).build();
+        TraineeDTO createdTraineeDto = TraineeDTO.builder().firstName(FIRST_NAME).lastName(LAST_NAME).username(GENERATED_USERNAME).build();
 
         when(traineeMapper.toEntity(traineeDto)).thenReturn(trainee);
-        when(traineeMapper.toDto(trainee)).thenReturn(traineeDto);
+        when(traineeService.create(trainee)).thenReturn(createdTrainee);
+        when(traineeMapper.toDto(createdTrainee)).thenReturn(createdTraineeDto);
 
         TraineeDTO actual = facade.createTrainee(traineeDto);
 
-        verify(traineeService).create(trainee);
-        assertThat(actual).isEqualTo(traineeDto);
+        assertThat(actual).isEqualTo(createdTraineeDto);
     }
 
     @Test
@@ -81,23 +83,40 @@ class GymFacadeTest {
     }
 
     @Test
+    void updateTrainee_shouldMapDelegateAndReturnDto() {
+        TraineeDTO traineeDto = TraineeDTO.builder().userId(USER_ID).firstName(FIRST_NAME).build();
+        Trainee trainee = Trainee.builder().userId(USER_ID).firstName(FIRST_NAME).build();
+
+        when(traineeMapper.toEntity(traineeDto)).thenReturn(trainee);
+        when(traineeMapper.toDto(trainee)).thenReturn(traineeDto);
+
+        TraineeDTO actual = facade.updateTrainee(traineeDto);
+
+        verify(traineeService).update(trainee);
+        assertThat(actual).isEqualTo(traineeDto);
+    }
+
+    @Test
     void deleteTraineeById_shouldDelegateToService() {
         facade.deleteTraineeById(USER_ID);
 
         verify(traineeService).deleteById(USER_ID);
     }
+
     @Test
     void createTrainer_shouldMapDelegateAndReturnDto() {
         TrainerDTO trainerDto = TrainerDTO.builder().firstName(FIRST_NAME).lastName(LAST_NAME).build();
         Trainer trainer = Trainer.builder().firstName(FIRST_NAME).lastName(LAST_NAME).build();
+        Trainer createdTrainer = Trainer.builder().firstName(FIRST_NAME).lastName(LAST_NAME).username(GENERATED_USERNAME).build();
+        TrainerDTO createdTrainerDto = TrainerDTO.builder().firstName(FIRST_NAME).lastName(LAST_NAME).username(GENERATED_USERNAME).build();
 
         when(trainerMapper.toEntity(trainerDto)).thenReturn(trainer);
-        when(trainerMapper.toDto(trainer)).thenReturn(trainerDto);
+        when(trainerService.create(trainer)).thenReturn(createdTrainer);
+        when(trainerMapper.toDto(createdTrainer)).thenReturn(createdTrainerDto);
 
         TrainerDTO actual = facade.createTrainer(trainerDto);
 
-        verify(trainerService).create(trainer);
-        assertThat(actual).isEqualTo(trainerDto);
+        assertThat(actual).isEqualTo(createdTrainerDto);
     }
 
     @Test
@@ -125,20 +144,6 @@ class GymFacadeTest {
 
         verify(trainerService).update(trainer);
         assertThat(actual).isEqualTo(trainerDto);
-    }
-
-    @Test
-    void updateTrainee_shouldMapDelegateAndReturnDto() {
-        TraineeDTO traineeDto = TraineeDTO.builder().userId(USER_ID).firstName(FIRST_NAME).build();
-        Trainee trainee = Trainee.builder().userId(USER_ID).firstName(FIRST_NAME).build();
-
-        when(traineeMapper.toEntity(traineeDto)).thenReturn(trainee);
-        when(traineeMapper.toDto(trainee)).thenReturn(traineeDto);
-
-        TraineeDTO actual = facade.updateTrainee(traineeDto);
-
-        verify(traineeService).update(trainee);
-        assertThat(actual).isEqualTo(traineeDto);
     }
 
     @Test

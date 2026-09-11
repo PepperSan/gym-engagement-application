@@ -1,25 +1,12 @@
 package com.gym.engagement.app.service;
 
-import com.gym.engagement.app.dao.TrainerDao;
 import com.gym.engagement.app.domain.Trainer;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
-@Service
-@RequiredArgsConstructor
-public class TrainerService {
+public interface TrainerService {
 
-    private final TrainerDao trainerDao;
+    Trainer create(Trainer trainer);
 
-    public void create(Trainer trainer) {
-        trainerDao.save(trainer);
-    }
+    Trainer selectById(Long id);
 
-    public Trainer selectById(Long id) {
-        return trainerDao.findById(id);
-    }
-
-    public void update(Trainer trainer) {
-        trainerDao.update(trainer);
-    }
+    void update(Trainer trainer);
 }

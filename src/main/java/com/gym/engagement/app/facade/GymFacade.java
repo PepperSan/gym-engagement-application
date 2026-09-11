@@ -29,9 +29,9 @@ public class GymFacade {
 
     public TrainerDTO createTrainer(TrainerDTO trainerDto) {
         Trainer trainer = trainerMapper.toEntity(trainerDto);
-        trainerService.create(trainer);
+        Trainer createdTrainer = trainerService.create(trainer);
 
-        return trainerMapper.toDto(trainer);
+        return trainerMapper.toDto(createdTrainer);
     }
 
     public TrainerDTO selectTrainerById(Long id) {
@@ -47,9 +47,9 @@ public class GymFacade {
 
     public TraineeDTO createTrainee(TraineeDTO traineeDto) {
         Trainee trainee = traineeMapper.toEntity(traineeDto);
-        traineeService.create(trainee);
+        Trainee createdTrainee = traineeService.create(trainee);
 
-        return traineeMapper.toDto(trainee);
+        return traineeMapper.toDto(createdTrainee);
     }
 
     public TraineeDTO selectTraineeById(Long id) {

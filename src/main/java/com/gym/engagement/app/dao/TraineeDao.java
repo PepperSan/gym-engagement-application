@@ -11,4 +11,6 @@ public interface TraineeDao {
     void update(Trainee trainee);
 
     void deleteById(Long id);
+
+    boolean existsByUsername(String username);
 }

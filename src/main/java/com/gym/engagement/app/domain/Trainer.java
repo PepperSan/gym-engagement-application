@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 
 @Getter
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 public class Trainer extends User {
 
     private final Long userId;
