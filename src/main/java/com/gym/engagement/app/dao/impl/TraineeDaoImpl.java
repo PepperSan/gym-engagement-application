@@ -36,4 +36,10 @@ public class TraineeDaoImpl implements TraineeDao {
     public void deleteById(Long id) {
         traineeStorage.getTrainees().remove(id);
     }
+
+    @Override
+    public boolean existsByUsername(String username) {
+        return traineeStorage.getTrainees().values().stream()
+                .anyMatch(trainee -> trainee.getUsername().equals(username));
+    }
 }

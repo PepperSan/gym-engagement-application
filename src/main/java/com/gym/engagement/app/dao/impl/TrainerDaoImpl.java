@@ -31,4 +31,10 @@ public class TrainerDaoImpl implements TrainerDao {
     public void update(Trainer trainer) {
         trainerStorage.getTrainers().put(trainer.getUserId(), trainer);
     }
+
+    @Override
+    public boolean existsByUsername(String username) {
+        return trainerStorage.getTrainers().values().stream()
+                .anyMatch(trainer -> trainer.getUsername().equals(username));
+    }
 }

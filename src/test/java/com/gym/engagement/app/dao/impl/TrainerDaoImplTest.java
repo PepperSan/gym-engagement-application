@@ -7,8 +7,7 @@ import com.gym.engagement.app.storage.TrainerStorage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 class TrainerDaoImplTest {
 
@@ -52,6 +51,22 @@ class TrainerDaoImplTest {
 
         Trainer persisted = trainerDao.findById(updatedTrainer.getUserId());
         assertEquals("Trainer Updated", persisted.getFirstName());
+    }
+
+    @Test
+    void existsByUsername_shouldReturnTrue_whenUsernameExists() {
+        trainerDao.save(trainer);
+
+        boolean actual = trainerDao.existsByUsername(trainer.getUsername());
+
+        assertTrue(actual);
+    }
+
+    @Test
+    void existsByUsername_shouldReturnFalse_whenUsernameDoesNotExist() {
+        boolean actual = trainerDao.existsByUsername("nonexistent.username");
+
+        assertFalse(actual);
     }
 
     private static Trainer buildTrainer() {

@@ -10,4 +10,5 @@ public interface TrainerDao {
 
     void update(Trainer trainer);
 
+    boolean existsByUsername(String username);
 }
