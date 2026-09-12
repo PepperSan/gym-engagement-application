@@ -11,6 +11,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.Logger;
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.core.read.ListAppender;
+import org.slf4j.LoggerFactory;
 
 import java.util.Optional;
 
@@ -107,5 +112,29 @@ class TraineeServiceImplTest {
         service.deleteById(USER_ID);
 
         verify(traineeDao).deleteById(USER_ID);
+    }
+    @Test
+    void create_shouldLogInfoMessages_whenTraineeCreatedSuccessfully() {
+        Logger logger = (Logger) LoggerFactory.getLogger(TraineeServiceImpl.class);
+        ListAppender<ILoggingEvent> logAppender = new ListAppender<>();
+        logAppender.start();
+        logger.addAppender(logAppender);
+
+        Trainee trainee = Trainee.builder().userId(USER_ID).firstName(FIRST_NAME).lastName(LAST_NAME).build();
+        when(credentialsManager.generateUsername(eq(FIRST_NAME), eq(LAST_NAME), any())).thenReturn(GENERATED_USERNAME);
+        when(credentialsManager.generateRandomPassword()).thenReturn(RAW_PASSWORD);
+        when(passwordEncoder.encode(RAW_PASSWORD)).thenReturn(ENCODED_PASSWORD);
+
+        service.create(trainee);
+
+        assertThat(logAppender.list).hasSize(2);
+        assertThat(logAppender.list)
+                .allMatch(event -> event.getLevel() == Level.INFO)
+                .extracting(ILoggingEvent::getFormattedMessage)
+                .containsExactly(
+                        String.format("Creating trainee: firstName=%s, lastName=%s", FIRST_NAME, LAST_NAME),
+                        String.format("Trainee created: userId=%s, username=%s", USER_ID, GENERATED_USERNAME));
+
+        logger.detachAppender(logAppender);
     }
 }
