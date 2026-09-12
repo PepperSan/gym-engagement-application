@@ -9,27 +9,29 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 class TrainerDaoImplTest {
 
-    private TrainerDao trainerDao;
+    private TrainerDao dao;
     private Trainer trainer;
 
     @BeforeEach
     void setUp() {
         TrainerStorage trainerStorage = new TrainerStorage();
         CommonStorage commonStorage = new CommonStorage(null, trainerStorage, null);
-        trainerDao = new TrainerDaoImpl();
-        ((TrainerDaoImpl) trainerDao).setTrainerStorage(commonStorage);
+        dao = new TrainerDaoImpl();
+        ((TrainerDaoImpl) dao).setTrainerStorage(commonStorage);
         trainer = buildTrainer();
     }
 
     @Test
     void shouldSaveTrainer() {
-        trainerDao.save(trainer);
+        dao.save(trainer);
 
-        Optional<Trainer> actual = trainerDao.findById(trainer.getUserId());
+        Optional<Trainer> actual = dao.findById(trainer.getUserId());
 
         assertTrue(actual.isPresent());
         assertEquals(trainer, actual.get());
@@ -37,9 +39,9 @@ class TrainerDaoImplTest {
 
     @Test
     void shouldFindTrainerById() {
-        trainerDao.save(trainer);
+        dao.save(trainer);
 
-        Optional<Trainer> actual = trainerDao.findById(trainer.getUserId());
+        Optional<Trainer> actual = dao.findById(trainer.getUserId());
 
         assertTrue(actual.isPresent());
         assertEquals("trainer", actual.get().getUsername());
@@ -47,28 +49,28 @@ class TrainerDaoImplTest {
 
     @Test
     void shouldUpdateTrainer() {
-        trainerDao.save(trainer);
+        dao.save(trainer);
         Trainer updatedTrainer = buildUpdatedTrainer();
 
-        trainerDao.update(updatedTrainer);
+        dao.update(updatedTrainer);
 
-        Optional<Trainer> persisted = trainerDao.findById(updatedTrainer.getUserId());
+        Optional<Trainer> persisted = dao.findById(updatedTrainer.getUserId());
         assertTrue(persisted.isPresent());
         assertEquals("Trainer Updated", persisted.get().getFirstName());
     }
 
     @Test
     void existsByUsername_shouldReturnTrue_whenUsernameExists() {
-        trainerDao.save(trainer);
+        dao.save(trainer);
 
-        boolean actual = trainerDao.existsByUsername(trainer.getUsername());
+        boolean actual = dao.existsByUsername(trainer.getUsername());
 
         assertTrue(actual);
     }
 
     @Test
     void existsByUsername_shouldReturnFalse_whenUsernameDoesNotExist() {
-        boolean actual = trainerDao.existsByUsername("nonexistent.username");
+        boolean actual = dao.existsByUsername("nonexistent.username");
 
         assertFalse(actual);
     }

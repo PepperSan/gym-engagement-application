@@ -52,6 +52,7 @@ class TrainingServiceImplTest {
         when(trainingDao.findById(TRAINING_ID)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> service.selectById(TRAINING_ID))
-                .isInstanceOf(CoreServiceException.class);
+                .isInstanceOf(CoreServiceException.class)
+                .hasMessage("Training with id " + TRAINING_ID + " not found");
     }
 }

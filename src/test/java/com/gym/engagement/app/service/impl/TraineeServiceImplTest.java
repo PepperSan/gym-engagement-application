@@ -78,7 +78,8 @@ class TraineeServiceImplTest {
         when(traineeDao.findById(USER_ID)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> service.selectById(USER_ID))
-                .isInstanceOf(CoreServiceException.class);
+                .isInstanceOf(CoreServiceException.class)
+                .hasMessage("Trainee with id " + USER_ID + " not found");
     }
 
     @Test
@@ -97,7 +98,8 @@ class TraineeServiceImplTest {
         when(traineeDao.findById(USER_ID)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> service.update(trainee))
-                .isInstanceOf(CoreServiceException.class);
+                .isInstanceOf(CoreServiceException.class)
+                .hasMessage("Trainee with id " + USER_ID + " not found");
     }
 
     @Test

@@ -78,7 +78,8 @@ class TrainerServiceImplTest {
         when(trainerDao.findById(USER_ID)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> service.selectById(USER_ID))
-                .isInstanceOf(CoreServiceException.class);
+                .isInstanceOf(CoreServiceException.class)
+                .hasMessage("Trainer with id " + USER_ID + " not found");
     }
 
     @Test
@@ -97,6 +98,7 @@ class TrainerServiceImplTest {
         when(trainerDao.findById(USER_ID)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> service.update(trainer))
-                .isInstanceOf(CoreServiceException.class);
+                .isInstanceOf(CoreServiceException.class)
+                .hasMessage("Trainer with id " + USER_ID + " not found");
     }
 }

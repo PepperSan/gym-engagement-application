@@ -14,23 +14,23 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class TrainingDaoImplTest {
 
-    private TrainingDao trainingDao;
+    private TrainingDao dao;
     private Training training;
 
     @BeforeEach
     void setUp() {
         TrainingStorage trainingStorage = new TrainingStorage();
         CommonStorage commonStorage = new CommonStorage(null, null, trainingStorage);
-        trainingDao = new TrainingDaoImpl();
-        ((TrainingDaoImpl) trainingDao).setTrainingStorage(commonStorage);
+        dao = new TrainingDaoImpl();
+        ((TrainingDaoImpl) dao).setTrainingStorage(commonStorage);
         training = buildTraining();
     }
 
     @Test
     void shouldSaveTraining() {
-        trainingDao.save(training);
+        dao.save(training);
 
-        Optional<Training> actual = trainingDao.findById(training.getId());
+        Optional<Training> actual = dao.findById(training.getId());
 
         assertTrue(actual.isPresent());
         assertEquals(training, actual.get());
@@ -38,9 +38,9 @@ class TrainingDaoImplTest {
 
     @Test
     void shouldFindTrainingById() {
-        trainingDao.save(training);
+        dao.save(training);
 
-        Optional<Training> actual = trainingDao.findById(training.getId());
+        Optional<Training> actual = dao.findById(training.getId());
 
         assertTrue(actual.isPresent());
         assertEquals("Cardio", actual.get().getTrainingName());
