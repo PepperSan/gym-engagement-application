@@ -30,7 +30,7 @@ public class GymFacade {
     private final TrainingMapper trainingMapper;
 
     public TrainerDTO createTrainer(TrainerDTO trainerDto) {
-        log.debug("Facade: create trainer request received");
+        log.info("Facade: create trainer request received");
         Trainer trainer = trainerMapper.toEntity(trainerDto);
         Trainer createdTrainer = trainerService.create(trainer);
 
@@ -38,12 +38,12 @@ public class GymFacade {
     }
 
     public TrainerDTO selectTrainerById(Long id) {
-        log.debug("Facade: select trainer by id={}", id);
+        log.info("Facade: select trainer by id={}", id);
         return trainerMapper.toDto(trainerService.selectById(id));
     }
 
     public TrainerDTO updateTrainer(TrainerDTO trainerDto) {
-        log.debug("Facade: update trainer request received, id={}", trainerDto.getUserId());
+        log.info("Facade: update trainer request received, id={}", trainerDto.getUserId());
         Trainer trainer = trainerMapper.toEntity(trainerDto);
         trainerService.update(trainer);
 
@@ -51,7 +51,7 @@ public class GymFacade {
     }
 
     public TraineeDTO createTrainee(TraineeDTO traineeDto) {
-        log.debug("Facade: create trainee request received");
+        log.info("Facade: create trainee request received");
         Trainee trainee = traineeMapper.toEntity(traineeDto);
         Trainee createdTrainee = traineeService.create(trainee);
 
@@ -59,12 +59,12 @@ public class GymFacade {
     }
 
     public TraineeDTO selectTraineeById(Long id) {
-        log.debug("Facade: select trainee by id={}", id);
+        log.info("Facade: select trainee by id={}", id);
         return traineeMapper.toDto(traineeService.selectById(id));
     }
 
     public TraineeDTO updateTrainee(TraineeDTO traineeDto) {
-        log.debug("Facade: update trainee request received, id={}", traineeDto.getUserId());
+        log.info("Facade: update trainee request received, id={}", traineeDto.getUserId());
         Trainee trainee = traineeMapper.toEntity(traineeDto);
         traineeService.update(trainee);
 
@@ -72,12 +72,12 @@ public class GymFacade {
     }
 
     public void deleteTraineeById(Long id) {
-        log.debug("Facade: delete trainee request received, id={}", id);
+        log.info("Facade: delete trainee request received, id={}", id);
         traineeService.deleteById(id);
     }
 
     public TrainingDTO createTraining(TrainingDTO trainingDto) {
-        log.debug("Facade: create training request received");
+        log.info("Facade: create training request received");
         Training training = trainingMapper.toEntity(trainingDto);
         trainingService.create(training);
 
@@ -85,7 +85,7 @@ public class GymFacade {
     }
 
     public TrainingDTO selectTrainingById(Long id) {
-        log.debug("Facade: select training by id={}", id);
+        log.info("Facade: select training by id={}", id);
         return trainingMapper.toDto(trainingService.selectById(id));
     }
 }

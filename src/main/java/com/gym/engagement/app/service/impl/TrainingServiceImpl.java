@@ -22,7 +22,7 @@ public class TrainingServiceImpl implements TrainingService {
 
     @Override
     public Training selectById(Long id) {
-        log.debug("Selecting training by id={}", id);
+        log.info("Selecting training by id={}", id);
         Training training = trainingDao.findById(id);
 
         if (training == null) {

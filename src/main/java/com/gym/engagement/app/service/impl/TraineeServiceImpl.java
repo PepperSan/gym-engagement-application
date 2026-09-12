@@ -22,7 +22,7 @@ public class TraineeServiceImpl implements TraineeService {
 
     @Override
     public Trainee create(Trainee trainee) {
-        log.debug("Creating trainee: firstName={}, lastName={}", trainee.getFirstName(), trainee.getLastName());
+        log.info("Creating trainee: firstName={}, lastName={}", trainee.getFirstName(), trainee.getLastName());
 
         String username = credentialsManager.generateUsername(
                 trainee.getFirstName(),
@@ -59,7 +59,7 @@ public class TraineeServiceImpl implements TraineeService {
 
     @Override
     public Trainee selectById(Long id) {
-        log.debug("Selecting trainee by id={}", id);
+        log.info("Selecting trainee by id={}", id);
         Trainee trainee = traineeDao.findById(id);
 
         if (trainee == null) {

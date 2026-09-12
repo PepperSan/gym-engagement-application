@@ -22,7 +22,7 @@ public class TrainerServiceImpl implements TrainerService {
 
     @Override
     public Trainer create(Trainer trainer) {
-        log.debug("Creating trainer: firstName={}, lastName={}", trainer.getFirstName(), trainer.getLastName());
+        log.info("Creating trainer: firstName={}, lastName={}", trainer.getFirstName(), trainer.getLastName());
 
         String username = credentialsManager.generateUsername(
                 trainer.getFirstName(),
@@ -57,7 +57,7 @@ public class TrainerServiceImpl implements TrainerService {
 
     @Override
     public Trainer selectById(Long id) {
-        log.debug("Selecting trainer by id={}", id);
+        log.info("Selecting trainer by id={}", id);
         Trainer trainer = trainerDao.findById(id);
 
         if (trainer == null) {
