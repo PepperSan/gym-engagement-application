@@ -6,9 +6,11 @@ import com.gym.engagement.app.domain.Trainee;
 import com.gym.engagement.app.service.TraineeService;
 import com.gym.engagement.app.service.common.UserCredentialsManager;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class TraineeServiceImpl implements TraineeService {
@@ -20,6 +22,8 @@ public class TraineeServiceImpl implements TraineeService {
 
     @Override
     public Trainee create(Trainee trainee) {
+        log.info("Creating trainee: firstName={}, lastName={}", trainee.getFirstName(), trainee.getLastName());
+
         String username = credentialsManager.generateUsername(
                 trainee.getFirstName(),
                 trainee.getLastName(),
@@ -39,6 +43,7 @@ public class TraineeServiceImpl implements TraineeService {
                 .build();
 
         traineeDao.save(traineeToSave);
+        log.info("Trainee created: userId={}, username={}", traineeToSave.getUserId(), username);
 
         return Trainee.builder()
                 .userId(traineeToSave.getUserId())
@@ -54,16 +59,25 @@ public class TraineeServiceImpl implements TraineeService {
 
     @Override
     public Trainee selectById(Long id) {
-        return traineeDao.findById(id);
+        log.info("Selecting trainee by id={}", id);
+        Trainee trainee = traineeDao.findById(id);
+
+        if (trainee == null) {
+            log.warn("Trainee not found for id={}", id);
+        }
+
+        return trainee;
     }
 
     @Override
     public void update(Trainee trainee) {
         traineeDao.update(trainee);
+        log.info("Trainee updated: userId={}", trainee.getUserId());
     }
 
     @Override
     public void deleteById(Long id) {
         traineeDao.deleteById(id);
+        log.info("Trainee deleted: userId={}", id);
     }
 }

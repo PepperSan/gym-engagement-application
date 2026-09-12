@@ -6,9 +6,11 @@ import com.gym.engagement.app.domain.Trainer;
 import com.gym.engagement.app.service.TrainerService;
 import com.gym.engagement.app.service.common.UserCredentialsManager;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class TrainerServiceImpl implements TrainerService {
@@ -20,6 +22,8 @@ public class TrainerServiceImpl implements TrainerService {
 
     @Override
     public Trainer create(Trainer trainer) {
+        log.info("Creating trainer: firstName={}, lastName={}", trainer.getFirstName(), trainer.getLastName());
+
         String username = credentialsManager.generateUsername(
                 trainer.getFirstName(),
                 trainer.getLastName(),
@@ -38,6 +42,7 @@ public class TrainerServiceImpl implements TrainerService {
                 .build();
 
         trainerDao.save(trainerToSave);
+        log.info("Trainer created: userId={}, username={}", trainerToSave.getUserId(), username);
 
         return Trainer.builder()
                 .userId(trainerToSave.getUserId())
@@ -52,11 +57,19 @@ public class TrainerServiceImpl implements TrainerService {
 
     @Override
     public Trainer selectById(Long id) {
-        return trainerDao.findById(id);
+        log.info("Selecting trainer by id={}", id);
+        Trainer trainer = trainerDao.findById(id);
+
+        if (trainer == null) {
+            log.warn("Trainer not found for id={}", id);
+        }
+
+        return trainer;
     }
 
     @Override
     public void update(Trainer trainer) {
         trainerDao.update(trainer);
+        log.info("Trainer updated: userId={}", trainer.getUserId());
     }
 }
