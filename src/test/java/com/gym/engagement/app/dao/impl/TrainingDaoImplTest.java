@@ -14,8 +14,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class TrainingDaoImplTest {
 
+    private final Training training = buildTraining();
     private TrainingDao dao;
-    private Training training;
 
     @BeforeEach
     void setUp() {
@@ -23,7 +23,6 @@ class TrainingDaoImplTest {
         CommonStorage commonStorage = new CommonStorage(null, null, trainingStorage);
         dao = new TrainingDaoImpl();
         ((TrainingDaoImpl) dao).setTrainingStorage(commonStorage);
-        training = buildTraining();
     }
 
     @Test

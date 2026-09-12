@@ -53,6 +53,6 @@ class TrainingServiceImplTest {
 
         assertThatThrownBy(() -> service.selectById(TRAINING_ID))
                 .isInstanceOf(CoreServiceException.class)
-                .hasMessage("Training with id " + TRAINING_ID + " not found");
+                .hasMessage(String.format("Training with id %s not found", TRAINING_ID));
     }
 }

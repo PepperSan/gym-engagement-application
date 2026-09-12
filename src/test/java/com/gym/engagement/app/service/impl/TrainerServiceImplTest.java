@@ -79,7 +79,7 @@ class TrainerServiceImplTest {
 
         assertThatThrownBy(() -> service.selectById(USER_ID))
                 .isInstanceOf(CoreServiceException.class)
-                .hasMessage("Trainer with id " + USER_ID + " not found");
+                .hasMessage(String.format("Trainer with id %s not found", USER_ID));
     }
 
     @Test
@@ -99,6 +99,6 @@ class TrainerServiceImplTest {
 
         assertThatThrownBy(() -> service.update(trainer))
                 .isInstanceOf(CoreServiceException.class)
-                .hasMessage("Trainer with id " + USER_ID + " not found");
+                .hasMessage(String.format("Trainer with id %s not found", USER_ID));
     }
 }

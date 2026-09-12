@@ -15,8 +15,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 
 class TrainerDaoImplTest {
 
+    private final Trainer trainer = buildTrainer();
     private TrainerDao dao;
-    private Trainer trainer;
 
     @BeforeEach
     void setUp() {
@@ -24,7 +24,6 @@ class TrainerDaoImplTest {
         CommonStorage commonStorage = new CommonStorage(null, trainerStorage, null);
         dao = new TrainerDaoImpl();
         ((TrainerDaoImpl) dao).setTrainerStorage(commonStorage);
-        trainer = buildTrainer();
     }
 
     @Test

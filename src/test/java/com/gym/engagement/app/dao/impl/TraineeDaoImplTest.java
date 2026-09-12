@@ -15,8 +15,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 
 class TraineeDaoImplTest {
 
+    private final Trainee trainee = buildTrainee();
     private TraineeDao dao;
-    private Trainee trainee;
 
     @BeforeEach
     void setUp() {
@@ -24,7 +24,6 @@ class TraineeDaoImplTest {
         CommonStorage commonStorage = new CommonStorage(traineeStorage, null, null);
         dao = new TraineeDaoImpl();
         ((TraineeDaoImpl) dao).setTraineeStorage(commonStorage);
-        trainee = buildTrainee();
     }
 
     @Test
