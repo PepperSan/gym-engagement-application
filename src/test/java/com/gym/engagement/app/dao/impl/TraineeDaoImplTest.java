@@ -7,74 +7,79 @@ import com.gym.engagement.app.storage.TraineeStorage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 class TraineeDaoImplTest {
 
-    private TraineeDao traineeDao;
-    private Trainee trainee;
+    private final Trainee trainee = buildTrainee();
+    private TraineeDao dao;
 
     @BeforeEach
     void setUp() {
         TraineeStorage traineeStorage = new TraineeStorage();
         CommonStorage commonStorage = new CommonStorage(traineeStorage, null, null);
-        traineeDao = new TraineeDaoImpl();
-        ((TraineeDaoImpl) traineeDao).setTraineeStorage(commonStorage);
-        trainee = buildTrainee();
+        dao = new TraineeDaoImpl();
+        ((TraineeDaoImpl) dao).setTraineeStorage(commonStorage);
     }
 
     @Test
     void shouldSaveTrainee() {
-        traineeDao.save(trainee);
+        dao.save(trainee);
 
-        Trainee actual = traineeDao.findById(trainee.getUserId());
+        Optional<Trainee> actual = dao.findById(trainee.getUserId());
 
-        assertEquals(trainee, actual);
+        assertTrue(actual.isPresent());
+        assertEquals(trainee, actual.get());
     }
 
     @Test
     void shouldFindTraineeById() {
-        traineeDao.save(trainee);
+        dao.save(trainee);
 
-        Trainee actual = traineeDao.findById(trainee.getUserId());
+        Optional<Trainee> actual = dao.findById(trainee.getUserId());
 
-        assertNotNull(actual);
-        assertEquals("andrii", actual.getUsername());
+        assertTrue(actual.isPresent());
+        assertEquals("andrii", actual.get().getUsername());
     }
 
     @Test
     void shouldUpdateTrainee() {
-        traineeDao.save(trainee);
+        dao.save(trainee);
         Trainee updatedTrainee = buildUpdatedTrainee();
 
-        traineeDao.update(updatedTrainee);
+        dao.update(updatedTrainee);
 
-        Trainee persisted = traineeDao.findById(updatedTrainee.getUserId());
-        assertEquals("Andrii Updated", persisted.getFirstName());
-        assertEquals("456 Oak Street", persisted.getAddress());
+        Optional<Trainee> persisted = dao.findById(updatedTrainee.getUserId());
+        assertTrue(persisted.isPresent());
+        assertEquals("Andrii Updated", persisted.get().getFirstName());
+        assertEquals("456 Oak Street", persisted.get().getAddress());
     }
 
     @Test
     void shouldDeleteTraineeById() {
-        traineeDao.save(trainee);
+        dao.save(trainee);
 
-        traineeDao.deleteById(trainee.getUserId());
+        dao.deleteById(trainee.getUserId());
 
-        assertNull(traineeDao.findById(trainee.getUserId()));
+        assertTrue(dao.findById(trainee.getUserId()).isEmpty());
     }
 
     @Test
     void existsByUsername_shouldReturnTrue_whenUsernameExists() {
-        traineeDao.save(trainee);
+        dao.save(trainee);
 
-        boolean actual = traineeDao.existsByUsername(trainee.getUsername());
+        boolean actual = dao.existsByUsername(trainee.getUsername());
 
         assertTrue(actual);
     }
 
     @Test
     void existsByUsername_shouldReturnFalse_whenUsernameDoesNotExist() {
-        boolean actual = traineeDao.existsByUsername("nonexistent.username");
+        boolean actual = dao.existsByUsername("nonexistent.username");
 
         assertFalse(actual);
     }

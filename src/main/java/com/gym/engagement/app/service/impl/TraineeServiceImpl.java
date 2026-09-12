@@ -4,6 +4,7 @@ import com.gym.engagement.app.dao.TraineeDao;
 import com.gym.engagement.app.dao.TrainerDao;
 import com.gym.engagement.app.domain.Trainee;
 import com.gym.engagement.app.service.TraineeService;
+import com.gym.engagement.app.service.exception.CoreServiceException;
 import com.gym.engagement.app.service.common.UserCredentialsManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -60,17 +61,20 @@ public class TraineeServiceImpl implements TraineeService {
     @Override
     public Trainee selectById(Long id) {
         log.info("Selecting trainee by id={}", id);
-        Trainee trainee = traineeDao.findById(id);
 
-        if (trainee == null) {
-            log.warn("Trainee not found for id={}", id);
-        }
-
-        return trainee;
+        return traineeDao.findById(id)
+                .orElseThrow(() -> {
+                    log.warn("Trainee not found for id={}", id);
+                    return new CoreServiceException(String.format("Trainee with id %s not found", id));
+                });
     }
 
     @Override
     public void update(Trainee trainee) {
+        traineeDao.findById(trainee.getUserId())
+                .orElseThrow(() -> new CoreServiceException(
+                        String.format("Trainee with id %s not found", trainee.getUserId())));
+
         traineeDao.update(trainee);
         log.info("Trainee updated: userId={}", trainee.getUserId());
     }

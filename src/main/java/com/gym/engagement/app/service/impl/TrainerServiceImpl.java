@@ -5,6 +5,7 @@ import com.gym.engagement.app.dao.TrainerDao;
 import com.gym.engagement.app.domain.Trainer;
 import com.gym.engagement.app.service.TrainerService;
 import com.gym.engagement.app.service.common.UserCredentialsManager;
+import com.gym.engagement.app.service.exception.CoreServiceException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -58,17 +59,20 @@ public class TrainerServiceImpl implements TrainerService {
     @Override
     public Trainer selectById(Long id) {
         log.info("Selecting trainer by id={}", id);
-        Trainer trainer = trainerDao.findById(id);
 
-        if (trainer == null) {
-            log.warn("Trainer not found for id={}", id);
-        }
-
-        return trainer;
+        return trainerDao.findById(id)
+                .orElseThrow(() -> {
+                    log.warn("Trainer not found for id={}", id);
+                    return new CoreServiceException(String.format("Trainer with id %s not found", id));
+                });
     }
 
     @Override
     public void update(Trainer trainer) {
+        trainerDao.findById(trainer.getUserId())
+                .orElseThrow(() -> new CoreServiceException(
+                        String.format("Trainer with id %s not found", trainer.getUserId())));
+
         trainerDao.update(trainer);
         log.info("Trainer updated: userId={}", trainer.getUserId());
     }

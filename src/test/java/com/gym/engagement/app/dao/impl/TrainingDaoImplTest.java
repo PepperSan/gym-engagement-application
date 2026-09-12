@@ -7,40 +7,42 @@ import com.gym.engagement.app.storage.TrainingStorage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class TrainingDaoImplTest {
 
-    private TrainingDao trainingDao;
-    private Training training;
+    private final Training training = buildTraining();
+    private TrainingDao dao;
 
     @BeforeEach
     void setUp() {
         TrainingStorage trainingStorage = new TrainingStorage();
         CommonStorage commonStorage = new CommonStorage(null, null, trainingStorage);
-        trainingDao = new TrainingDaoImpl();
-        ((TrainingDaoImpl) trainingDao).setTrainingStorage(commonStorage);
-        training = buildTraining();
+        dao = new TrainingDaoImpl();
+        ((TrainingDaoImpl) dao).setTrainingStorage(commonStorage);
     }
 
     @Test
     void shouldSaveTraining() {
-        trainingDao.save(training);
+        dao.save(training);
 
-        Training actual = trainingDao.findById(training.getId());
+        Optional<Training> actual = dao.findById(training.getId());
 
-        assertEquals(training, actual);
+        assertTrue(actual.isPresent());
+        assertEquals(training, actual.get());
     }
 
     @Test
     void shouldFindTrainingById() {
-        trainingDao.save(training);
+        dao.save(training);
 
-        Training actual = trainingDao.findById(training.getId());
+        Optional<Training> actual = dao.findById(training.getId());
 
-        assertNotNull(actual);
-        assertEquals("Cardio", actual.getTrainingName());
+        assertTrue(actual.isPresent());
+        assertEquals("Cardio", actual.get().getTrainingName());
     }
 
     private static Training buildTraining() {
