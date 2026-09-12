@@ -8,6 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Slf4j
 @Repository
 public class TrainingDaoImpl implements TrainingDao {
@@ -26,10 +28,10 @@ public class TrainingDaoImpl implements TrainingDao {
     }
 
     @Override
-    public Training findById(Long id) {
+    public Optional<Training> findById(Long id) {
         Training training = trainingStorage.getTrainings().get(id);
         log.debug("Training lookup by id={}: found={}", id, training != null);
 
-        return training;
+        return Optional.ofNullable(training);
     }
 }

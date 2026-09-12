@@ -8,6 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Slf4j
 @Repository
 public class TraineeDaoImpl implements TraineeDao {
@@ -26,11 +28,11 @@ public class TraineeDaoImpl implements TraineeDao {
     }
 
     @Override
-    public Trainee findById(Long id) {
+    public Optional<Trainee> findById(Long id) {
         Trainee trainee = traineeStorage.getTrainees().get(id);
         log.debug("Trainee lookup by id={}: found={}", id, trainee != null);
 
-        return trainee;
+        return Optional.ofNullable(trainee);
     }
 
     @Override
@@ -47,10 +49,10 @@ public class TraineeDaoImpl implements TraineeDao {
 
     @Override
     public boolean existsByUsername(String username) {
-        boolean exists = traineeStorage.getTrainees().values().stream()
+        boolean usernameExists = traineeStorage.getTrainees().values().stream()
                 .anyMatch(trainee -> trainee.getUsername().equals(username));
-        log.debug("Username existence check: username={}, exists={}", username, exists);
+        log.debug("Username existence check: username={}, exists={}", username, usernameExists);
 
-        return exists;
+        return usernameExists;
     }
 }

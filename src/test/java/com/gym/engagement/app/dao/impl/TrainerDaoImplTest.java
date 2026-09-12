@@ -7,6 +7,8 @@ import com.gym.engagement.app.storage.TrainerStorage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class TrainerDaoImplTest {
@@ -27,19 +29,20 @@ class TrainerDaoImplTest {
     void shouldSaveTrainer() {
         trainerDao.save(trainer);
 
-        Trainer actual = trainerDao.findById(trainer.getUserId());
+        Optional<Trainer> actual = trainerDao.findById(trainer.getUserId());
 
-        assertEquals(trainer, actual);
+        assertTrue(actual.isPresent());
+        assertEquals(trainer, actual.get());
     }
 
     @Test
     void shouldFindTrainerById() {
         trainerDao.save(trainer);
 
-        Trainer actual = trainerDao.findById(trainer.getUserId());
+        Optional<Trainer> actual = trainerDao.findById(trainer.getUserId());
 
-        assertNotNull(actual);
-        assertEquals("trainer", actual.getUsername());
+        assertTrue(actual.isPresent());
+        assertEquals("trainer", actual.get().getUsername());
     }
 
     @Test
@@ -49,8 +52,9 @@ class TrainerDaoImplTest {
 
         trainerDao.update(updatedTrainer);
 
-        Trainer persisted = trainerDao.findById(updatedTrainer.getUserId());
-        assertEquals("Trainer Updated", persisted.getFirstName());
+        Optional<Trainer> persisted = trainerDao.findById(updatedTrainer.getUserId());
+        assertTrue(persisted.isPresent());
+        assertEquals("Trainer Updated", persisted.get().getFirstName());
     }
 
     @Test

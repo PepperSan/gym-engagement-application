@@ -3,6 +3,7 @@ package com.gym.engagement.app.service.impl;
 import com.gym.engagement.app.dao.TrainerDao;
 import com.gym.engagement.app.domain.Trainer;
 import com.gym.engagement.app.service.common.UserCredentialsManager;
+import com.gym.engagement.app.service.exception.CoreServiceException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -11,7 +12,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
@@ -62,7 +66,7 @@ class TrainerServiceImplTest {
     @Test
     void selectById_shouldReturnTrainerFromDao() {
         Trainer trainer = Trainer.builder().userId(USER_ID).firstName(FIRST_NAME).build();
-        when(trainerDao.findById(USER_ID)).thenReturn(trainer);
+        when(trainerDao.findById(USER_ID)).thenReturn(Optional.of(trainer));
 
         Trainer actual = service.selectById(USER_ID);
 
@@ -70,11 +74,29 @@ class TrainerServiceImplTest {
     }
 
     @Test
+    void selectById_shouldThrowException_whenTrainerNotFound() {
+        when(trainerDao.findById(USER_ID)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> service.selectById(USER_ID))
+                .isInstanceOf(CoreServiceException.class);
+    }
+
+    @Test
     void update_shouldUpdateTrainerViaDao() {
         Trainer trainer = Trainer.builder().userId(USER_ID).firstName(FIRST_NAME).build();
+        when(trainerDao.findById(USER_ID)).thenReturn(Optional.of(trainer));
 
         service.update(trainer);
 
         verify(trainerDao).update(trainer);
+    }
+
+    @Test
+    void update_shouldThrowException_whenTrainerNotFound() {
+        Trainer trainer = Trainer.builder().userId(USER_ID).firstName(FIRST_NAME).build();
+        when(trainerDao.findById(USER_ID)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> service.update(trainer))
+                .isInstanceOf(CoreServiceException.class);
     }
 }

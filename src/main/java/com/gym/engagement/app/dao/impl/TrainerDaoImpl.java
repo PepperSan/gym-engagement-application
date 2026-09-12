@@ -8,6 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Slf4j
 @Repository
 public class TrainerDaoImpl implements TrainerDao {
@@ -26,11 +28,11 @@ public class TrainerDaoImpl implements TrainerDao {
     }
 
     @Override
-    public Trainer findById(Long id) {
+    public Optional<Trainer> findById(Long id) {
         Trainer trainer = trainerStorage.getTrainers().get(id);
         log.debug("Trainer lookup by id={}: found={}", id, trainer != null);
 
-        return trainer;
+        return Optional.ofNullable(trainer);
     }
 
     @Override
@@ -41,10 +43,10 @@ public class TrainerDaoImpl implements TrainerDao {
 
     @Override
     public boolean existsByUsername(String username) {
-        boolean exists = trainerStorage.getTrainers().values().stream()
+        boolean usernameExists = trainerStorage.getTrainers().values().stream()
                 .anyMatch(trainer -> trainer.getUsername().equals(username));
-        log.debug("Username existence check: username={}, exists={}", username, exists);
+        log.debug("Username existence check: username={}, exists={}", username, usernameExists);
 
-        return exists;
+        return usernameExists;
     }
 }

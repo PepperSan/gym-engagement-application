@@ -7,6 +7,8 @@ import com.gym.engagement.app.storage.TraineeStorage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class TraineeDaoImplTest {
@@ -27,19 +29,20 @@ class TraineeDaoImplTest {
     void shouldSaveTrainee() {
         traineeDao.save(trainee);
 
-        Trainee actual = traineeDao.findById(trainee.getUserId());
+        Optional<Trainee> actual = traineeDao.findById(trainee.getUserId());
 
-        assertEquals(trainee, actual);
+        assertTrue(actual.isPresent());
+        assertEquals(trainee, actual.get());
     }
 
     @Test
     void shouldFindTraineeById() {
         traineeDao.save(trainee);
 
-        Trainee actual = traineeDao.findById(trainee.getUserId());
+        Optional<Trainee> actual = traineeDao.findById(trainee.getUserId());
 
-        assertNotNull(actual);
-        assertEquals("andrii", actual.getUsername());
+        assertTrue(actual.isPresent());
+        assertEquals("andrii", actual.get().getUsername());
     }
 
     @Test
@@ -49,9 +52,10 @@ class TraineeDaoImplTest {
 
         traineeDao.update(updatedTrainee);
 
-        Trainee persisted = traineeDao.findById(updatedTrainee.getUserId());
-        assertEquals("Andrii Updated", persisted.getFirstName());
-        assertEquals("456 Oak Street", persisted.getAddress());
+        Optional<Trainee> persisted = traineeDao.findById(updatedTrainee.getUserId());
+        assertTrue(persisted.isPresent());
+        assertEquals("Andrii Updated", persisted.get().getFirstName());
+        assertEquals("456 Oak Street", persisted.get().getAddress());
     }
 
     @Test
@@ -60,7 +64,7 @@ class TraineeDaoImplTest {
 
         traineeDao.deleteById(trainee.getUserId());
 
-        assertNull(traineeDao.findById(trainee.getUserId()));
+        assertTrue(traineeDao.findById(trainee.getUserId()).isEmpty());
     }
 
     @Test
