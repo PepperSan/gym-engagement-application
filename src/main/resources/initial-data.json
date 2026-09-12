@@ -5,7 +5,7 @@
       "firstName": "Alex",
       "lastName": "Kovalenko",
       "username": "Alex.Kovalenko",
-      "password": "securePass123",
+      "password": "$2b$12$uc6AmJMn4Xz1.cl86q1AvOtgKJ1RVs5z5g2aLi81wVXAXxTGpXcxu",
       "active": true,
       "dateOfBirth": "1998-04-12",
       "address": "Khreshchatyk St 15, Kyiv"
@@ -15,7 +15,7 @@
       "firstName": "Olena",
       "lastName": "Melnyk",
       "username": "Olena.Melnyk",
-      "password": "fitPassword01",
+      "password": "$2b$12$IOvHAAnlbFLRolxb2MocjOwo1jw5lM/tT1EWMJDBHh69hw2ItSJ8O",
       "active": true,
       "dateOfBirth": "2000-11-03",
       "address": "Horodetskoho St 8, Lviv"
@@ -27,7 +27,7 @@
       "firstName": "Marcus",
       "lastName": "Vance",
       "username": "Marcus.Vance",
-      "password": "trainerPass456",
+      "password": "$2b$12$Ecd16BDDYked4q2kqQLh4ui9txwHq1Y7pnjJEvq92jT5RUJYwmM6O",
       "active": true,
       "specialization": "Cardio"
     }
