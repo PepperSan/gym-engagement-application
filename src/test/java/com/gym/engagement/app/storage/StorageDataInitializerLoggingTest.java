@@ -14,8 +14,6 @@ import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 class StorageDataInitializerLoggingTest {
@@ -23,7 +21,7 @@ class StorageDataInitializerLoggingTest {
     private static final String VALID_DATA_FILE = "classpath:initial-data.json";
     private static final String MISSING_DATA_FILE = "classpath:does-not-exist.json";
 
-    private ListAppender<ILoggingEvent> listAppender;
+    private ListAppender<ILoggingEvent> logAppender;
     private StorageDataInitializer initializer;
     private CommonStorage commonStorage;
 
@@ -37,15 +35,15 @@ class StorageDataInitializerLoggingTest {
         commonStorage = new CommonStorage(new TraineeStorage(), new TrainerStorage(), new TrainingStorage());
 
         Logger logger = (Logger) LoggerFactory.getLogger(StorageDataInitializer.class);
-        listAppender = new ListAppender<>();
-        listAppender.start();
-        logger.addAppender(listAppender);
+        logAppender = new ListAppender<>();
+        logAppender.start();
+        logger.addAppender(logAppender);
     }
 
     @AfterEach
     void tearDown() {
         Logger logger = (Logger) LoggerFactory.getLogger(StorageDataInitializer.class);
-        logger.detachAppender(listAppender);
+        logger.detachAppender(logAppender);
     }
 
     @Test
@@ -54,11 +52,13 @@ class StorageDataInitializerLoggingTest {
 
         initializer.postProcessAfterInitialization(commonStorage, "commonStorage");
 
-        List<ILoggingEvent> infoLogs = listAppender.list.stream()
-                .filter(event -> event.getLevel() == Level.INFO)
-                .toList();
-        assertThat(infoLogs).anyMatch(event ->
-                event.getFormattedMessage().contains("Initial data loaded"));
+        assertThat(logAppender.list).hasSize(1);
+        assertThat(logAppender.list)
+                .allMatch(event -> event.getLevel() == Level.INFO)
+                .extracting(ILoggingEvent::getFormattedMessage)
+                .containsExactly(String.format(
+                        "Initial data loaded from %s: %d trainees, %d trainers, %d trainings",
+                        VALID_DATA_FILE, 2, 1, 1));
     }
 
     @Test
@@ -67,10 +67,10 @@ class StorageDataInitializerLoggingTest {
 
         initializer.postProcessAfterInitialization(commonStorage, "commonStorage");
 
-        List<ILoggingEvent> errorLogs = listAppender.list.stream()
-                .filter(event -> event.getLevel() == Level.ERROR)
-                .toList();
-        assertThat(errorLogs).anyMatch(event ->
-                event.getFormattedMessage().contains("Failed to load initial data"));
+        assertThat(logAppender.list).hasSize(1);
+        assertThat(logAppender.list)
+                .allMatch(event -> event.getLevel() == Level.ERROR)
+                .extracting(ILoggingEvent::getFormattedMessage)
+                .containsExactly(String.format("Failed to load initial data from %s", MISSING_DATA_FILE));
     }
 }
