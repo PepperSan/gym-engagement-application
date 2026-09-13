@@ -14,6 +14,7 @@ import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class StorageDataInitializerLoggingTest {
@@ -56,8 +57,7 @@ class StorageDataInitializerLoggingTest {
         assertThat(logAppender.list)
                 .allMatch(event -> event.getLevel() == Level.INFO)
                 .extracting(ILoggingEvent::getFormattedMessage)
-                .containsExactly(String.format(
-                        "Initial data loaded from %s: %d trainees, %d trainers, %d trainings",
+                .containsExactly(format("Initial data loaded from %s: %d trainees, %d trainers, %d trainings",
                         VALID_DATA_FILE, 2, 1, 1));
     }
 
@@ -71,6 +71,6 @@ class StorageDataInitializerLoggingTest {
         assertThat(logAppender.list)
                 .allMatch(event -> event.getLevel() == Level.ERROR)
                 .extracting(ILoggingEvent::getFormattedMessage)
-                .containsExactly(String.format("Failed to load initial data from %s", MISSING_DATA_FILE));
+                .containsExactly(format("Failed to load initial data from %s", MISSING_DATA_FILE));
     }
 }
