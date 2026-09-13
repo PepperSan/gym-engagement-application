@@ -1,5 +1,9 @@
 package com.gym.engagement.app.service.impl;
 
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.Logger;
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.core.read.ListAppender;
 import com.gym.engagement.app.dao.TraineeDao;
 import com.gym.engagement.app.domain.Trainee;
 import com.gym.engagement.app.service.common.UserCredentialsManager;
@@ -10,10 +14,12 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
+import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
@@ -79,7 +85,7 @@ class TraineeServiceImplTest {
 
         assertThatThrownBy(() -> service.selectById(USER_ID))
                 .isInstanceOf(CoreServiceException.class)
-                .hasMessage(String.format("Trainee with id %s not found", USER_ID));
+                .hasMessage(format("Trainee with id %s not found", USER_ID));
     }
 
     @Test
@@ -99,7 +105,7 @@ class TraineeServiceImplTest {
 
         assertThatThrownBy(() -> service.update(trainee))
                 .isInstanceOf(CoreServiceException.class)
-                .hasMessage(String.format("Trainee with id %s not found", USER_ID));
+                .hasMessage(format("Trainee with id %s not found", USER_ID));
     }
 
     @Test
@@ -107,5 +113,28 @@ class TraineeServiceImplTest {
         service.deleteById(USER_ID);
 
         verify(traineeDao).deleteById(USER_ID);
+    }
+
+    @Test
+    void create_shouldLogInfoMessages_whenTraineeCreatedSuccessfully() {
+        Logger logger = (Logger) LoggerFactory.getLogger(TraineeServiceImpl.class);
+        ListAppender<ILoggingEvent> logAppender = new ListAppender<>();
+        logAppender.start();
+        logger.addAppender(logAppender);
+        Trainee trainee = Trainee.builder().userId(USER_ID).firstName(FIRST_NAME).lastName(LAST_NAME).build();
+        when(credentialsManager.generateUsername(eq(FIRST_NAME), eq(LAST_NAME), any())).thenReturn(GENERATED_USERNAME);
+        when(credentialsManager.generateRandomPassword()).thenReturn(RAW_PASSWORD);
+        when(passwordEncoder.encode(RAW_PASSWORD)).thenReturn(ENCODED_PASSWORD);
+
+        service.create(trainee);
+
+        assertThat(logAppender.list).hasSize(2);
+        assertThat(logAppender.list)
+                .allMatch(event -> event.getLevel() == Level.INFO)
+                .extracting(ILoggingEvent::getFormattedMessage)
+                .containsExactly(format("Creating trainee: firstName=%s, lastName=%s", FIRST_NAME, LAST_NAME),
+                        format("Trainee created: userId=%s, username=%s", USER_ID, GENERATED_USERNAME));
+
+        logger.detachAppender(logAppender);
     }
 }
